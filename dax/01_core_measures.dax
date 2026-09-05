@@ -1,0 +1,64 @@
+-------------------------------------------------------
+
+Net Sales = 
+CALCULATE(
+    [Total Sales],
+    'Retails Order Full Dataset'[Returned] = "Not"
+)
+
+=======================================================
+
+Total Profit = 
+SUM(
+    'Retails Order Full Dataset'[Profit]
+)
+
+=======================================================
+
+Return Rate % = DIVIDE(
+    [Returned Items],
+    COUNTROWS('Retails Order Full Dataset'),
+    0
+)
+
+=======================================================
+
+Returned Sales = 
+    CALCULATE(
+        [Total Sales],
+        'Retails Order Full Dataset'[Returned] = "Yes"
+)
+
+=======================================================
+
+Profit Margin % = 
+DIVIDE(
+    [Total Profit],
+    [Total Sales],
+    0
+)
+
+=======================================================
+
+Returned Items = 
+CALCULATE(
+    COUNTROWS(
+        'Retails Order Full Dataset'),
+    'Retails Order Full Dataset'[Returned] = "Yes"
+)
+
+=======================================================
+
+Total Quantity = 
+SUM(
+    'Retails Order Full Dataset'[Quantity]
+)
+
+=======================================================
+
+Total Sales = 
+SUM(
+    'Retails Order Full Dataset'[Sales]
+    )
+
+------------------------------------------------------------------------------------------------------

@@ -1,0 +1,57 @@
+// ==========================================
+// Color
+// ==========================================
+
+Color Profit Margin = 
+IF(
+    NOT(ISFILTERED('Retails Order Full Dataset'[Retail Sales People])),
+    "#000000", 
+    SWITCH(
+        TRUE(),
+        [Profit Margin vs Avg %] > 0, "#10B981", 
+        [Profit Margin vs Avg %] < 0, "#EF4444",
+        "#000000"
+    )
+)
+
+// ==========================================
+// Navigation Text
+// ==========================================
+
+Nav_Salesreps_Text = 
+IF(
+    ISFILTERED('Retails Order Full Dataset'[Retail Sales People]) 
+        && CALCULATE(HASONEVALUE('Retails Order Full Dataset'[Retail Sales People]), ALLSELECTED('Retails Order Full Dataset')),
+    "View " & SELECTEDVALUE('Retails Order Full Dataset'[Retail Sales People]) & "'s Profile",
+    "SELECT SALES REP"
+)
+
+// ==========================================
+// Subtitle
+// ==========================================
+
+Net Sales Subtitle = 
+"Average: " 
+    & FORMAT(DIVIDE([Net Sales Avg], 1000), "$#,##0.00") 
+    & "K (" & FORMAT([Net Sales vs Avg %], "+0.0%;-0.0%") & ")"
+
+// ==========================================
+// Value Based On Selected
+// ==========================================
+
+Selected Salesrep Name = 
+VAR _SelectedCount = COUNTROWS(VALUES('Retails Order Full Dataset'[Retail Sales People]))
+VAR _TotalCount = CALCULATE(DISTINCTCOUNT('Retails Order Full Dataset'[Retail Sales People]), ALL('Retails Order Full Dataset'))
+RETURN
+    SWITCH(
+        TRUE(),
+        _SelectedCount = _TotalCount, "ALL",
+        
+        _SelectedCount = 1, SELECTEDVALUE('Retails Order Full Dataset'[Retail Sales People]),
+        
+        _SelectedCount <= 2, CONCATENATEX(VALUES('Retails Order Full Dataset'[Retail Sales People]), 'Retails Order Full Dataset'[Retail Sales People], ", "),
+        
+        _SelectedCount & " Sales Reps Selected"
+    )
+
+// ==========================================
